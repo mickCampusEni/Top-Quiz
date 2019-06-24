@@ -1,7 +1,9 @@
 package com.example.topquiz.controller;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -26,6 +28,9 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     private QuestionBank mQuestionBank;
     private Question mCurrentQuestion;
 
+    private int mScore;
+    private int mNumberOfQuestions;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -33,6 +38,8 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_game);
 
         mQuestionBank = initializeQuestionBank();
+        mScore = 0;
+        mNumberOfQuestions = 4;
 
         mQuestionTextView = findViewById(R.id.activity_game_question_text);
         mAnswerButton1 = findViewById(R.id.activity_game_answer1_btn);
@@ -61,10 +68,38 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
 
         if(responseIndex == mCurrentQuestion.getAnswerIndex()){
             Toast.makeText(this, "Correct", Toast.LENGTH_SHORT).show();
+            mScore++;
         }
         else{
             Toast.makeText(this, "Wrong answer", Toast.LENGTH_SHORT).show();
         }
+
+        if(--mNumberOfQuestions == 0){
+            endGame();
+        }
+        else{
+            mCurrentQuestion = mQuestionBank.getquestion();
+            displayQuestion(mCurrentQuestion);
+        }
+
+    }
+
+
+    private void endGame(){
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        builder.setTitle("Well done !")
+                .setMessage("Your score is : " + mScore)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener(){
+                    @Override
+                    public void onClick(DialogInterface dialog, int witch){
+                        finish();
+                    }
+                })
+                .create()
+                .show();
+
     }
 
     private void displayQuestion(final Question pQuestion){
