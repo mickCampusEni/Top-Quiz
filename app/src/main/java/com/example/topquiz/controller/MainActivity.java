@@ -32,7 +32,6 @@ public class MainActivity extends AppCompatActivity {
         mNameInput = findViewById(R.id.activity_main_name_input);
         mPlayButton = findViewById(R.id.activity_main_play_btn);
 
-        // Désactive le boutton lorsque le champ est vide
         mPlayButton.setEnabled(false);
 
         mNameInput.addTextChangedListener(new TextWatcher() {

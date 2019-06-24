@@ -8,15 +8,12 @@ import java.util.List;
 public class Question {
 
     private String mQuestion;
-    private List<String> mChoiseList;
+    private List<String> mChoiceList;
     private int mAnswerIndex;
 
-    public Question() {
-    }
-
-    public Question(String pQuestion, List<String> pChoiseList, int pAnswerIndex) {
+    public Question(String pQuestion, List<String> pChoiceList, int pAnswerIndex) {
         this.mQuestion = pQuestion;
-        this.mChoiseList = pChoiseList;
+        this.mChoiceList = pChoiceList;
         this.mAnswerIndex = pAnswerIndex;
     }
 
@@ -29,7 +26,7 @@ public class Question {
     }
 
     public List<String> getChoiseList() {
-        return mChoiseList;
+        return mChoiceList;
     }
 
     public void setChoiseList(List<String> pChoiseList) {
@@ -37,7 +34,7 @@ public class Question {
         if(pChoiseList == null){
             throw new IllegalArgumentException("Array cannot be null");
         }
-        mChoiseList = pChoiseList;
+        mChoiceList = pChoiseList;
     }
 
     public int getAnswerIndex() {
@@ -46,7 +43,7 @@ public class Question {
 
     public void setAnswerIndex(int pAnswerIndex) {
 
-        if(pAnswerIndex < 0 || pAnswerIndex >= mChoiseList.size()){
+        if(pAnswerIndex < 0 || pAnswerIndex >= mChoiceList.size()){
             throw new IllegalArgumentException("Answer index is out of bound");
         }
         mAnswerIndex = pAnswerIndex;
@@ -56,7 +53,7 @@ public class Question {
     public String toString() {
         return "Question{" +
                 "mQuestion='" + mQuestion + '\'' +
-                ", mChoiseList=" + mChoiseList +
+                ", mChoiseList=" + mChoiceList +
                 ", mAnswerIndex=" + mAnswerIndex +
                 '}';
     }

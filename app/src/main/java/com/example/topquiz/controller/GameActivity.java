@@ -3,23 +3,28 @@ package com.example.topquiz.controller;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.topquiz.R;
 import com.example.topquiz.model.QuestionBank;
 import com.example.topquiz.model.Question;
 
 import java.util.Arrays;
+import java.util.List;
 
-public class GameActivity extends AppCompatActivity {
+public class GameActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private TextView mQuestion;
-    private Button mAnswer1;
-    private Button mAnswer2;
-    private Button mAnswer3;
-    private Button mAnswer4;
+    private TextView mQuestionTextView;
+    private Button mAnswerButton1;
+    private Button mAnswerButton2;
+    private Button mAnswerButton3;
+    private Button mAnswerButton4;
+
     private QuestionBank mQuestionBank;
+    private Question mCurrentQuestion;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,13 +32,50 @@ public class GameActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
 
-        mQuestion = findViewById(R.id.activity_game_question_text);
-        mAnswer1 = findViewById(R.id.activity_game_answer1_btn);
-        mAnswer2 = findViewById(R.id.activity_game_answer2_btn);
-        mAnswer3 = findViewById(R.id.activity_game_answer3_btn);
-        mAnswer4 = findViewById(R.id.activity_game_answer4_btn);
+        mQuestionBank = initializeQuestionBank();
 
-        initializeQuestionBank();
+        mQuestionTextView = findViewById(R.id.activity_game_question_text);
+        mAnswerButton1 = findViewById(R.id.activity_game_answer1_btn);
+        mAnswerButton2 = findViewById(R.id.activity_game_answer2_btn);
+        mAnswerButton3 = findViewById(R.id.activity_game_answer3_btn);
+        mAnswerButton4 = findViewById(R.id.activity_game_answer4_btn);
+
+        mAnswerButton1.setTag(0);
+        mAnswerButton2.setTag(1);
+        mAnswerButton3.setTag(2);
+        mAnswerButton4.setTag(3);
+
+        mAnswerButton1.setOnClickListener(this);
+        mAnswerButton2.setOnClickListener(this);
+        mAnswerButton3.setOnClickListener(this);
+        mAnswerButton4.setOnClickListener(this);
+
+        mCurrentQuestion = mQuestionBank.getquestion();
+        this.displayQuestion(mCurrentQuestion);
+    }
+
+    @Override
+    public void onClick(View pView) {
+
+        int responseIndex = (int) pView.getTag();
+
+        if(responseIndex == mCurrentQuestion.getAnswerIndex()){
+            Toast.makeText(this, "Correct", Toast.LENGTH_SHORT).show();
+        }
+        else{
+            Toast.makeText(this, "Wrong answer", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void displayQuestion(final Question pQuestion){
+
+        List<String> choiceList = pQuestion.getChoiseList();
+
+        mQuestionTextView.setText(pQuestion.getQuestion());
+        mAnswerButton1.setText(choiceList.get(0));
+        mAnswerButton2.setText(choiceList.get(1));
+        mAnswerButton3.setText(choiceList.get(2));
+        mAnswerButton4.setText(choiceList.get(3));
     }
 
     private QuestionBank initializeQuestionBank(){
