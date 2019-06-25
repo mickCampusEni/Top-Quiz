@@ -96,7 +96,7 @@ public class MainActivity extends AppCompatActivity {
         int score = getPreferences(MODE_PRIVATE).getInt(PREFERENCE_KEY_SCORE, -1);
 
         if(firstName != null && score != -1){
-            StringBuilder greetingText = new StringBuilder("Welcome back, ").append(firstName).append( "! \n")
+            StringBuilder greetingText = new StringBuilder("Welcome back, ").append(firstName).append( " ! \n")
                                             .append("Your last score was ").append(score).append(", will you do better this time ?");
             mGreetingText.setText(greetingText);
             mNameInput.setText(firstName);
