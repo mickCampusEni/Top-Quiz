@@ -1,5 +1,6 @@
 package com.example.topquiz.controller;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -20,6 +21,15 @@ public class MainActivity extends AppCompatActivity {
     private EditText mNameInput;
     private Button mPlayButton;
     private User mUser;
+    public static final int GAME_ACTIVIY_REQUEST_CODE = 1;
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+
+        if(GAME_ACTIVIY_REQUEST_CODE == requestCode && RESULT_OK == resultCode){
+            int score = data.getIntExtra(GameActivity.BUNDLE_EXTRA_CORE, 0);
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,8 +70,10 @@ public class MainActivity extends AppCompatActivity {
                 mUser.setFirstName(firstName);
 
                 Intent gameActivityIntent = new Intent(MainActivity.this, GameActivity.class);
-                startActivity(gameActivityIntent);
+                startActivityForResult(gameActivityIntent, GAME_ACTIVIY_REQUEST_CODE);
             }
         });
+
+
     }
 }
