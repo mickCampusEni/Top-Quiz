@@ -1,5 +1,6 @@
 package com.example.topquiz.controller;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -7,6 +8,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.PersistableBundle;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
@@ -35,6 +37,8 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     private int mNumberOfQuestions;
 
     public static final String BUNDLE_EXTRA_CORE = "BUNDLE_EXTRA_CORE";
+    public static final String BUNDLE_STATE_SCORE = "currentScore";
+    public static final String BUNDLE_STATE_QUESTION = "currentQuestion";
 
     private boolean mEnableTouchEvents;
 
@@ -47,8 +51,16 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         System.out.println("GameActivity :: onCreate()");
 
         mQuestionBank = initializeQuestionBank();
-        mScore = 0;
-        mNumberOfQuestions = 4;
+
+        if(savedInstanceState != null){
+            mScore = savedInstanceState.getInt(BUNDLE_STATE_SCORE);
+            mNumberOfQuestions = savedInstanceState.getInt(BUNDLE_STATE_QUESTION);
+        }
+        else{
+            mScore = 0;
+            mNumberOfQuestions = 4;
+        }
+
         mEnableTouchEvents = true;
 
         mQuestionTextView = findViewById(R.id.activity_game_question_text);
@@ -104,6 +116,13 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
         return mEnableTouchEvents && super.dispatchTouchEvent(ev);
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState, @NonNull PersistableBundle outPersistentState) {
+        outState.putInt(BUNDLE_STATE_SCORE, mScore);
+        outState.putInt(BUNDLE_STATE_QUESTION, mNumberOfQuestions);
+        super.onSaveInstanceState(outState, outPersistentState);
     }
 
     private void endGame(){
